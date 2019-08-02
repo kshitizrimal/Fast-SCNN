@@ -93,7 +93,7 @@ gfe_layer = pyramid_pooling_block(gfe_layer, [2,4,6,8])
 ff_layer1 = conv_block(lds_layer, 'conv', 128, (1,1), padding='same', strides= (1,1), relu=False)
 
 ff_layer2 = tf.keras.layers.UpSampling2D((4, 4))(gfe_layer)
-ff_layer2 = tf.keras.layers.DepthwiseConv2D(128, strides=(1, 1), depth_multiplier=1, padding='same')(ff_layer2)
+ff_layer2 = tf.keras.layers.DepthwiseConv2D((3,3), strides=(1, 1), depth_multiplier=1, padding='same')(ff_layer2)
 ff_layer2 = tf.keras.layers.BatchNormalization()(ff_layer2)
 ff_layer2 = tf.keras.activations.relu(ff_layer2)
 ff_layer2 = tf.keras.layers.Conv2D(128, 1, 1, padding='same', activation=None)(ff_layer2)
@@ -113,7 +113,7 @@ classifier = tf.keras.layers.BatchNormalization()(classifier)
 classifier = tf.keras.activations.relu(classifier)
 
 
-classifier = conv_block(classifier, 'conv', 19, (1, 1), strides=(1, 1), padding='same', relu=True)
+classifier = conv_block(classifier, 'conv', 19, (1, 1), strides=(1, 1), padding='same', relu=False)
 
 classifier = tf.keras.layers.Dropout(0.3)(classifier)
 
